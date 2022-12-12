@@ -1,6 +1,6 @@
 const { DB_URL, DB_NAME } = require("../config/db");
 const { MongoClient } = require("mongodb");
-const { getDiffRight, fetch } = require("../libs/utils")
+const { getDiffLeft, fetch } = require("../libs/utils")
 const { JSDOM } = require('jsdom')
 const { setIntervalFix } = require("../libs/utils")
 
@@ -31,7 +31,7 @@ exports.scrapGempaRealtime = async () => {
         data.sourceUrl = sourceUrl
         dataGempa.push(data)
     }
-    const filteredData = getDiffRight(dataGempa, tempData)
+    const filteredData = getDiffLeft(dataGempa, tempData)
     try {
         if (tempData.length > 0)
             filteredData.forEach(element => {
@@ -40,7 +40,6 @@ exports.scrapGempaRealtime = async () => {
         // for the first time server run
         else
             saveMultiData(filteredData)
-        console.log('done insert')
     } catch (error) {
         console.log('some data cannot be save', error)
     } finally {
@@ -73,7 +72,7 @@ const saveMultiData = async (data) => {
                 }
             });
         });
-        await gempaCollection.bulkWrite(bulkData);
+        if(bulkData.length > 0) await gempaCollection.bulkWrite(bulkData);
     } catch (error) {
         console.log('error insert to DB', error)
     }

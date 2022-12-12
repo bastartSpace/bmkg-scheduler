@@ -1,6 +1,6 @@
 const { DB_URL, DB_NAME } = require("../config/db");
 const { MongoClient } = require("mongodb");
-const { getDiffRight, fetch } = require("../libs/utils")
+const { getDiffLeft, fetch } = require("../libs/utils")
 const { JSDOM } = require('jsdom')
 
 const mongoClient = new MongoClient(DB_URL);
@@ -26,7 +26,7 @@ exports.scrapGempaTerkini = async () => {
         data.wilayah = element.querySelector('td:nth-child(7)').textContent
         dataGempa.push(data)
     }
-    const filteredData = getDiffRight(dataGempa, tempData)
+    const filteredData = getDiffLeft(dataGempa, tempData)
     try {
         if (tempData.length > 0)
             filteredData.forEach(element => {

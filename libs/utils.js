@@ -13,7 +13,7 @@ exports.fetch = (url) => {
         });
 }
 
-exports.getDiffRight = (arrA, arrB) => {
+exports.getDiffLeft = (arrA, arrB) => {
     return arrA.filter((x, i) => {
         const test = arrB.findIndex(y => {
             for (const key in y) {
